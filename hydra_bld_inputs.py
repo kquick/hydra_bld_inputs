@@ -100,7 +100,7 @@ class HydraEval(object):
 
     @property
     def inputs(self):
-        '''Returns dict { "inp_name": { "inptype": "...", ..."value": VAL } }'''
+        '''Returns dict { "inp_name": { "is": "...", ..."value": VAL } }'''
         if self._inputs: return self._inputs
         self._fetch_inputs()
         return self._inputs
@@ -125,16 +125,16 @@ class HydraEval(object):
         }[vals['type']](name, vals)
 
     def _string_input(self, name, vals):
-        return { 'inptype': 'str', 'value': vals['value'] }
+        return { 'is': 'str', 'value': vals['value'] }
 
     def _path_input(self, name, vals):
-        return { 'inptype': 'path', 'value': vals['value'] }
+        return { 'is': 'path', 'value': vals['value'] }
 
     def _boolean_input(self, name, vals):
-        return { 'inptype': 'bool', 'value': vals['value'] }
+        return { 'is': 'bool', 'value': vals['value'] }
 
     def _git_input(self, name, vals):
-        return { 'inptype': 'git', 'uri': vals['uri'], 'rev': vals['revision'] }
+        return { 'is': 'git', 'uri': vals['uri'], 'rev': vals['revision'] }
 
     def _build_input(self, name, vals):
         buildid = vals['dependency']
@@ -159,7 +159,7 @@ class HydraEval(object):
         if result: return result
 
         # Else just use the output path in the nix store
-        return { 'inptype': 'path', 'value': bld.outputs['out']['path'] }
+        return { 'is': 'path', 'value': bld.outputs['out']['path'] }
 
 
 class HydraBuild(object):
