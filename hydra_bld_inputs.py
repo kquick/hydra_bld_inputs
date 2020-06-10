@@ -1,36 +1,11 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i "python3.7 -u" -p git swiProlog "python37.withPackages(pp: with pp; [ thespian setproctitle attrs requests ])"
 
-# import argparse
-# import datetime
-# import os
-# import os.path
-# import sys
-# from thespian.actors import ActorSystem
 import attr
 import requests
 import json
 from KVITable import KVITable
 from typing import Any, Dict, List, Tuple, Union
-
-valid_queries="""
-api/latestbuilds?nr=5
-api/jobsets?project=grappa
-api/queue?nr=5
-api/nrqueue
-api/nrbuilds
-api/push?force=1&jobsets=a,b&repos=r1,r2    # triggers jobsets a and b or those with JobsetInputAlts r1 and r2
-api/push-github data={repository:{owner:{name:"OWNERNAME"},name="REPONAME"}} # triggers JobsetInputAlts %github.com%$OWNERNAME/$REPONAME
-
-api/jobsets/PROJECT
-api/jobset/PROJECT/JOBSET
-   /jobs-tab?filter=...&showInactive=1
-   /clone
-   /evals?page=N
-   /latest-eval
-
-eval/N
-"""
 
 
 class HydraBuilder(object):
@@ -234,10 +209,8 @@ def get_bld_inputs(builder_url, eval_id):
     result = KVITable(['name','input'])
     for inp in sorted(eval.inputs):
         for key in eval.inputs[inp]:
-            # if key == 'inptype': continue
             result.add(eval.inputs[inp][key],
                        name=inp, input='input',
-                       # inptype=eval.inputs[inp]['inptype'],
                        key=key)
     print(result.render(colstack_at='input',
                         sort_vals=True,
