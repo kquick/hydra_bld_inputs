@@ -205,10 +205,14 @@ class HydraBuild(object):
 def get_bld_inputs(builder_url, eval_id):
     builder = HydraBuilder(builder_url)
     eval = HydraEval(builder, eval_id)
+    return eval.inputs
+
+
+def show_bld_inputs(inputs):
     result = KVITable(['name','input'])
-    for inp in sorted(eval.inputs):
-        for key in eval.inputs[inp]:
-            result.add(eval.inputs[inp][key],
+    for inp in sorted(inputs):
+        for key in inputs[inp]:
+            result.add(inputs[inp][key],
                        name=inp, input='input',
                        key=key)
     print(result.render(colstack_at='input',
@@ -216,10 +220,37 @@ def get_bld_inputs(builder_url, eval_id):
                         row_repeat=False,
     ))
 
+def show_bld_diffs(name1, inputs1, name2, inputs2):
+    result = KVITable(['name','eval','input'])
+    for inp in sorted(inputs1):
+        if inp not in inputs2 or inputs1[inp] != inputs2[inp]:
+            for key in inputs1[inp]:
+                result.add(inputs1[inp][key], name=inp, eval=name1, input='input', key=key)
+                result.add(inputs2[inp][key], name=inp, eval=name2, input='input', key=key)
+    for inp in sorted(inputs2):
+        if inp not in inputs1:
+            for key in inputs2[inp]:
+                result.add(inputs2[inp][key], name=inp, eval=name2, input='input', key=key)
+    print(result.render(colstack_at='input',
+                        sort_vals=True,
+                        row_repeat=False,
+                        row_group='name',
+    ))
+
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 3:
-        print('Usage:',sys.argv[0],' hydra-url eval-num')
+    if len(sys.argv) not in [3,4]:
+        print('Usage:',sys.argv[0],' hydra-url eval-num [eval-num]')
+        print('')
+        print('  With one eval-num, displays a table of all of the inputs for that eval.')
+        print('  With two eval-nums, displays a table of only the differing inputs')
+        print('    between the evals')
         sys.exit(1)
-    get_bld_inputs(sys.argv[1], sys.argv[2])
+
+    if len(sys.argv) == 3:
+        show_bld_inputs(get_bld_inputs(sys.argv[1], sys.argv[2]))
+
+    else:
+        show_bld_diffs(sys.argv[2] + ' inputs', get_bld_inputs(sys.argv[1], sys.argv[2]),
+                       sys.argv[3] + ' inputs', get_bld_inputs(sys.argv[1], sys.argv[3]))
