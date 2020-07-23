@@ -1,0 +1,15 @@
+Tool to get information about evals (builds) done by the Hydra CI builder.
+
+Run as:
+
+#+BEGIN_EXAMPLE
+$ ./hydra_bld_inputs.py http://hydra.nixos.org 1579474
+#+END_EXAMPLE
+
+or to compare the inputs between two evaluations:
+
+#+BEGIN_EXAMPLE
+$ ./hydra_bld_inputs.py http://hydra.nixos.org 1578960 1579474
+#+END_EXAMPLE
+
+You will probably need a wide display for better readability of the results.
