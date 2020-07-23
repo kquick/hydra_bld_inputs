@@ -109,7 +109,7 @@ class HydraEval(object):
         if not inps:
             raise RuntimeError('This very strange project has no inputs!')
         if not blds:
-            raise RuntimeError('No builds yet to obtain inputs for')
+            raise RuntimeError('No builds yet to obtain inputs for; try again after hydra has had a chance to build this evaluation.')
         self._builds = [ HydraBuild(self.builder, str(bld_id)) for bld_id in blds ]
         self._inputs = { inp : self._input(inp, inps[inp]) for inp in inps }
 
