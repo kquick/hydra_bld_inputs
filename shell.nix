@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {}
 }:
 let
-  callPackage = pkgs.newScope (pkgs // pkgs.python37Packages);
+  callPackage = pkgs.newScope (pkgs // pkgs.python3Packages);
 
   proj = callPackage ./default.nix {};
 
