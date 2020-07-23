@@ -1,7 +1,6 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i "python3.7 -u" -p git swiProlog "python37.withPackages(pp: with pp; [ thespian setproctitle attrs requests ])"
+#! nix-shell -i "python3 -u" -p git swiProlog "python3.withPackages(pp: with pp; [ requests ])"
 
-import attr
 import requests
 import json
 from KVITable import KVITable
